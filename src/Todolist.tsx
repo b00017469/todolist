@@ -2,6 +2,10 @@ import React, {ChangeEvent} from "react";
 import {FilterValue} from "./App";
 import {AddItemForm} from "./common/components/AddItemForm";
 import {EditableSpan} from "./common/components/EditableSpan";
+import IconButton from "@mui/material/IconButton";
+import Delete from "@mui/icons-material/Delete";
+import Button from "@mui/material/Button";
+import Checkbox from "@mui/material/Checkbox";
 
 export type Task = {
     id: string;
@@ -66,9 +70,14 @@ export const Todolist = ({
         <h3>
             <EditableSpan value={title} onChange={changeTodolistTitleHandle}/>
         </h3>
-        <button onClick={onRemoveTodolistClick}>✖</button>
+
+        <IconButton onClick={onRemoveTodolistClick}>
+            <Delete/>
+        </IconButton>
+
         <AddItemForm addItem={addTaskHandle}/>
-        <ul>
+
+        <div>
             {tasks.map(task => {
                 const onRemoveClick = () => {
                     removeTask(id, task.id)
@@ -79,24 +88,33 @@ export const Todolist = ({
                 const changeTaskTitleHandle = (newTitle: string) => {
                     changeTaskTitle(id, task.id, newTitle);
                 }
-                return <li key={task.id} className={task.isDone ? 'is-done' : ''}>
-                    <input type="checkbox" checked={task.isDone}
-                           onChange={onChangeHandle}/>
+                return <div key={task.id} className={task.isDone ? 'is-done' : ''}>
+                    <Checkbox checked={task.isDone}
+                              onChange={onChangeHandle}/>
                     <EditableSpan value={task.title} onChange={changeTaskTitleHandle}/>
-                    <button onClick={onRemoveClick}>✖</button>
-                </li>
+
+                    <IconButton onClick={onRemoveClick}>
+                        <Delete/>
+                    </IconButton>
+                </div>
             })}
-        </ul>
+        </div>
+
         <div>
-            <button onClick={onAllClickHandle}
-                    className={filter === 'all' ? 'active-filter' : ''}>All
-            </button>
-            <button onClick={onActiveClickHandle}
-                    className={filter === 'active' ? 'active-filter' : ''}>Active
-            </button>
-            <button onClick={onCompletedClickHandle}
-                    className={filter === 'completed' ? 'active-filter' : ''}>Completed
-            </button>
+            <Button onClick={onAllClickHandle}
+                    variant={filter === 'all' ? 'outlined' : 'text'}
+                    color='inherit'>All
+            </Button>
+
+            <Button onClick={onActiveClickHandle}
+                    variant={filter === 'active' ? 'outlined' : 'text'}
+                    color='primary'>Active
+            </Button>
+
+            <Button onClick={onCompletedClickHandle}
+                    variant={filter === 'completed' ? 'outlined' : 'text'}
+                    color='secondary'>Completed
+            </Button>
         </div>
     </div>
 }
