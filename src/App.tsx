@@ -7,14 +7,9 @@ import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import {Header} from "./Header";
+import {TodolistType} from "./state/todolists-reducer";
 
 export type FilterValue = 'all' | 'active' | 'completed';
-
-type Todolist = {
-    id: string;
-    title: string;
-    filter: FilterValue;
-};
 
 export type TaskState = {
     [key: string]: Task[];
@@ -25,7 +20,7 @@ export const App = () => {
     const todolistId1 = v1();
     const todolistId2 = v1();
 
-    const [todolists, setTodolists] = useState<Todolist[]>(
+    const [todolists, setTodolists] = useState<TodolistType[]>(
         [
             {id: todolistId1, title: 'What to learn', filter: 'all'},
             {id: todolistId2, title: 'What to buy', filter: 'all'},
@@ -78,7 +73,7 @@ export const App = () => {
     }
     const addTodolist = (title: string) => {
         const newTodolistId = v1();
-        const newTodolist: Todolist = {id: newTodolistId, title, filter: "all"};
+        const newTodolist: TodolistType = {id: newTodolistId, title, filter: "all"};
         setTodolists([newTodolist, ...todolists]);
         setTasks({...tasks, [newTodolistId]: []})
     };
