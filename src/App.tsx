@@ -1,33 +1,29 @@
 import React, {useState} from 'react';
 import './App.css';
-import {Task, Todolist} from "./Todolist";
+import {Todolist} from "./Todolist";
 import {v1} from "uuid";
 import {AddItemForm} from "./common/components/AddItemForm";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import {Header} from "./Header";
-import {TodolistType} from "./state/todolists-reducer";
+import {TodolistState} from "./state/todolists-reducer";
+import {TasksState} from "./state/tasks-reducer";
 
 export type FilterValue = 'all' | 'active' | 'completed';
-
-export type TaskState = {
-    [key: string]: Task[];
-}
-
 
 export const App = () => {
     const todolistId1 = v1();
     const todolistId2 = v1();
 
-    const [todolists, setTodolists] = useState<TodolistType[]>(
+    const [todolists, setTodolists] = useState<TodolistState[]>(
         [
             {id: todolistId1, title: 'What to learn', filter: 'all'},
             {id: todolistId2, title: 'What to buy', filter: 'all'},
         ]
     );
 
-    const [tasks, setTasks] = useState<TaskState>(
+    const [tasks, setTasks] = useState<TasksState>(
         {
             [todolistId1]: [
                 {id: v1(), title: "HTML&CSS", isDone: true},
@@ -73,7 +69,7 @@ export const App = () => {
     }
     const addTodolist = (title: string) => {
         const newTodolistId = v1();
-        const newTodolist: TodolistType = {id: newTodolistId, title, filter: "all"};
+        const newTodolist: TodolistState = {id: newTodolistId, title, filter: "all"};
         setTodolists([newTodolist, ...todolists]);
         setTasks({...tasks, [newTodolistId]: []})
     };
