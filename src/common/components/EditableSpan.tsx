@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, {ChangeEvent, memo, useState} from 'react';
 import TextField from "@mui/material/TextField";
 
 type Props = {
@@ -6,7 +6,7 @@ type Props = {
     onChange: (newValue: string) => void;
 }
 
-export const EditableSpan = ({value, onChange}: Props) => {
+export const EditableSpan = memo(({value, onChange}: Props) => {
     const [editMode, setEditMode] = useState<boolean>(false);
     const [text, setText] = useState(value)
 
@@ -33,4 +33,4 @@ export const EditableSpan = ({value, onChange}: Props) => {
         <span onDoubleClick={activeEditeMode}>
             {text}
         </span>;
-};
+});

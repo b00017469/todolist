@@ -1,4 +1,4 @@
-import {Task} from "../Todolist";
+import {TaskType} from "../Todolist";
 import {v1} from "uuid";
 import {AddTodolistAction, RemoveTodolistAction} from "./todolists-reducer";
 
@@ -57,7 +57,7 @@ export const changeTaskTitleAC = (todolistId: string, taskId: string, title: str
 };
 
 export type TasksState = {
-    [key: string]: Task[];
+    [key: string]: TaskType[];
 };
 
 export type RemoveTaskAction = {
