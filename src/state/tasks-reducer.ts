@@ -1,5 +1,6 @@
 import {Task} from "../Todolist";
 import {v1} from "uuid";
+import {AddTodolistAction, RemoveTodolistAction} from "./todolists-reducer";
 
 export const tasksReducer = (state: TasksState, action: Actions) => {
     switch (action.type) {
@@ -29,6 +30,12 @@ export const tasksReducer = (state: TasksState, action: Actions) => {
                         ? {...task, title: action.title}
                         : task)
             };
+        case "ADD-TODOLIST":
+            return {...state, [action.todolistId]: []};
+        case "REMOVE-TODOLIST":
+            const copyState = {...state};
+            delete copyState[action.id];
+            return copyState;
         default:
             throw new Error('I don\'t understand this type')
     }
@@ -76,4 +83,9 @@ export type ChangeTaskTitleAction = {
 
 
 type Actions =
-    RemoveTaskAction | AddTaskAction | ChangeTaskStatusAction | ChangeTaskTitleAction;
+    RemoveTaskAction
+    | AddTaskAction
+    | ChangeTaskStatusAction
+    | ChangeTaskTitleAction
+    | AddTodolistAction
+    | RemoveTodolistAction;
