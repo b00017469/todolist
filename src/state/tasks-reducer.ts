@@ -2,7 +2,9 @@ import {Task} from "../Todolist";
 import {v1} from "uuid";
 import {AddTodolistAction, RemoveTodolistAction} from "./todolists-reducer";
 
-export const tasksReducer = (state: TasksState, action: Actions) => {
+const initialState: TasksState = {};
+
+export const tasksReducer = (state: TasksState = initialState, action: Actions): TasksState => {
     switch (action.type) {
         case 'REMOVE-TASK':
             return {
@@ -37,20 +39,20 @@ export const tasksReducer = (state: TasksState, action: Actions) => {
             delete copyState[action.id];
             return copyState;
         default:
-            throw new Error('I don\'t understand this type')
+            return state;
     }
 };
 
-export const removeTask = (todolistId: string, taskId: string): RemoveTaskAction => {
+export const removeTaskAC = (todolistId: string, taskId: string): RemoveTaskAction => {
     return {type: 'REMOVE-TASK', todolistId, taskId}
 };
-export const addTask = (todolistId: string, title: string): AddTaskAction => {
+export const addTaskAC = (todolistId: string, title: string): AddTaskAction => {
     return {type: 'ADD-TASK', todolistId, title}
 };
 export const changeTaskStatus = (todolistId: string, taskId: string, status: boolean): ChangeTaskStatusAction => {
     return {type: "CHANGE-TASK-STATUS", todolistId, taskId, status}
 };
-export const changeTaskTitle = (todolistId: string, taskId: string, title: string): ChangeTaskTitleAction => {
+export const changeTaskTitleAC = (todolistId: string, taskId: string, title: string): ChangeTaskTitleAction => {
     return {type: 'CHANGE-TASK-TITLE', todolistId, taskId, title}
 };
 
