@@ -1,7 +1,7 @@
 import {instance} from "./config";
 
-export const todolistAPI = {
-    getTodolist() {
+export const todolistsAPI = {
+    getTodolists() {
         return instance.get<TodolistType[]>(`todo-lists`);
     },
     createTodolist(title: string) {
@@ -15,7 +15,7 @@ export const todolistAPI = {
     },
 };
 
-type TodolistType = {
+export type TodolistType = {
     id: string
     addedDate: string
     order: number

@@ -1,6 +1,6 @@
 import {instance} from "./config";
 
-export const taskAPI = {
+export const tasksAPI = {
     getTasks(todolistId: string) {
         return instance.get<GetTasksResponse>(`todo-lists/${todolistId}/tasks`);
     },
