@@ -1,25 +1,26 @@
 import React, {memo, useCallback, useEffect} from "react";
-import {FilterValue} from "./App";
-import {AddItemForm} from "./common/components/AddItemForm";
-import {EditableSpan} from "./common/components/EditableSpan";
+import {AddItemForm} from "../../../common/components/AddItemForm";
+import {EditableSpan} from "../../../common/components/EditableSpan";
 import IconButton from "@mui/material/IconButton";
 import Delete from "@mui/icons-material/Delete";
-import {ButtonMemo} from "./common/components/ButtonMemo";
-import {useAppDispatch} from "./common/hooks/useAppDispatch";
-import {addTaskTC, getTasksTC} from "./state/tasks-reducer";
-import {Task} from "./Task";
-import {TaskStatuses, TaskType} from "./api/task-api";
+import {ButtonMemo} from "../../../common/components/ButtonMemo";
+import {useAppDispatch} from "../../../common/hooks/useAppDispatch";
+import {addTaskTC, getTasksTC} from "../../../state/tasks-reducer";
+import {Task} from "./task/Task";
+import {TaskStatuses, TaskType} from "../../../api/task-api";
+import {FilterValues} from "../../../state/todolists-reducer";
+import {RequestStatusType} from "../../../state/app-reducer";
 
 
 type Props = {
     id: string;
     title: string;
     tasks: TaskType[];
-    filter: FilterValue;
-    setFilter: (todolistId: string, value: FilterValue) => void;
+    filter: FilterValues;
+    setFilter: (todolistId: string, value: FilterValues) => void;
     removeTodolist: (todolistId: string) => void;
-    changeTaskTitle: (todolistId: string, id: string, newTitle: string) => void;
     changeTodolistTitle: (todolistId: string, newTitle: string) => void;
+    entityStatus: RequestStatusType;
 };
 
 export const Todolist = memo(({
@@ -29,11 +30,13 @@ export const Todolist = memo(({
                                   setFilter,
                                   filter,
                                   removeTodolist,
-                                  changeTaskTitle,
-                                  changeTodolistTitle
+                                  changeTodolistTitle,
+                                  entityStatus
                               }: Props) => {
 
     const dispatch = useAppDispatch();
+    const isDisable = entityStatus === 'loading'
+
     useEffect(() => {
         dispatch(getTasksTC(id))
     }, []);
@@ -66,20 +69,18 @@ export const Todolist = memo(({
         tasks = tasks.filter(task => task.status !== TaskStatuses.Completed);
     if (filter === 'completed')
         tasks = tasks.filter(task => task.status === TaskStatuses.Completed);
-    useCallback((taskId: string, newTitle: string) => {
-        changeTaskTitle(id, taskId, newTitle);
-    }, [id, changeTaskTitle]);
+
 
     return <div>
         <h3>
             <EditableSpan value={title} onChange={changeTodolistTitleHandle}/>
         </h3>
 
-        <IconButton onClick={onRemoveTodolistClick}>
+        <IconButton onClick={onRemoveTodolistClick} disabled={isDisable}>
             <Delete/>
         </IconButton>
 
-        <AddItemForm addItem={addTaskHandle}/>
+        <AddItemForm addItem={addTaskHandle} disabled={isDisable}/>
 
         <div>
             {tasks.map(task => {

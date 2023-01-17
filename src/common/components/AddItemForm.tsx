@@ -4,23 +4,24 @@ import IconButton from "@mui/material/IconButton";
 import AddBox from "@mui/icons-material/AddBox";
 
 type Props = {
-    addItem: (title: string) => void
+    addItem: (title: string) => void;
+    disabled?: boolean;
 }
 
-export const AddItemForm = memo(({addItem}: Props) => {
+export const AddItemForm = memo(({addItem, disabled}: Props) => {
     const [taskTitle, setTaskTitle] = useState<string>('');
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const changeTitle = (event: ChangeEvent<HTMLInputElement>) => {
         setTaskTitle(event.currentTarget.value);
-        setErrorMessage(null);
     };
 
     const onKeyPressHandle = (event: KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === 'Enter') addTaskHandle();
+        if (errorMessage !== null) setErrorMessage(null);
+        if (event.key === 'Enter') addItemHandle();
     };
 
-    const addTaskHandle = () => {
+    const addItemHandle = () => {
         if (taskTitle.trim() !== '') {
             addItem(taskTitle.trim());
             setTaskTitle('');
@@ -31,12 +32,15 @@ export const AddItemForm = memo(({addItem}: Props) => {
 
     return (
         <div>
-            <TextField variant='outlined' value={taskTitle} onChange={changeTitle}
+            <TextField variant='outlined'
+                       value={taskTitle}
+                       onChange={changeTitle}
                        onKeyPress={onKeyPressHandle}
                        error={!!errorMessage}
                        label='Title'
-                       helperText={errorMessage}/>
-            <IconButton color='primary' onClick={addTaskHandle}>
+                       helperText={errorMessage}
+                       disabled={disabled}/>
+            <IconButton color='primary' onClick={addItemHandle} disabled={disabled}>
                 <AddBox/>
             </IconButton>
         </div>

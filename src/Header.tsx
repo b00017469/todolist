@@ -5,8 +5,13 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import {useAppSelector} from "./common/hooks/useAppSelector";
+import LinearProgress from "@mui/material/LinearProgress";
 
 export const Header = () => {
+
+    const status = useAppSelector((state) => state.app.status);
+
     return (
         <AppBar position="static">
             <Toolbar>
@@ -18,11 +23,12 @@ export const Header = () => {
                 >
                     <MenuIcon/>
                 </IconButton>
-                <Typography variant="h6" sx={{ flexGrow: 1 }}>
+                <Typography variant="h6" sx={{flexGrow: 1}}>
                     Todolist
                 </Typography>
-                <Button color="inherit" >Login</Button>
+                <Button color="inherit">Login</Button>
             </Toolbar>
+            {status === 'loading' && <LinearProgress color="success"/>}
         </AppBar>
     );
 };
