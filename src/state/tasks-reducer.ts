@@ -70,6 +70,10 @@ export const getTasksTC = (todolistId: string): AppThunk => (dispatch) => {
         .then((response) => {
             dispatch(setTasksAC(response.data.items, todolistId))
             dispatch(setStatus('succeeded'))
+        })
+        .catch((error: AxiosError) => {
+            dispatch(setError(error.message))
+            dispatch(setStatus('failed'))
         });
 }
 
@@ -103,6 +107,10 @@ export const removeTaskTC = (todolistId: string, taskId: string): AppThunk => (d
             const action = removeTaskAC(todolistId, taskId)
             dispatch(action)
             dispatch(setStatus('succeeded'))
+        })
+        .catch((error: AxiosError) => {
+            dispatch(setError(error.message))
+            dispatch(setStatus('failed'))
         })
 }
 export const updateTaskTC = (todolistId: string, taskId: string, domainModel: UpdateDomainTaskModelType): AppThunk =>
